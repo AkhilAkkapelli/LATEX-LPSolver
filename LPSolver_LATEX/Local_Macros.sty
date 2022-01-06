@@ -1,0 +1,57 @@
+%!TEX root = Karmarkar.tex
+
+\usepackage{paracol}
+\usepackage{multicol}
+\usepackage[margin=1in,footskip=.25in]{geometry}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,fit,backgrounds,positioning}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{hyperref}
+
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=yellow!20,
+text width=6em, text badly centered, node distance=3cm, inner sep=0.5em]
+
+\tikzstyle{block} = [rectangle, draw, fill=blue!20,  text centered, rounded corners, minimum height=5em,inner sep=2em ]
+
+\tikzstyle{textbox} = [rectangle, draw, fill=yellow!80, text centered,  minimum height=5em,inner sep=1em ]
+
+\tikzstyle{end} = [rectangle, draw, fill=red!20, text centered,  minimum height=5em,inner sep=1em ]
+
+\tikzstyle{line} = [draw, -]
+\tikzstyle{arrow} = [draw, -latex']
+\tikzstyle{darrow} = [draw, latex-latex]
+
+\tikzstyle{doubleline} = [draw, latex'-latex']
+
+\tikzstyle{cloud} = [draw, ellipse,fill=green!20, node distance=3cm,
+minimum height=0.5em,inner sep=0.75em]
+
+\tikzstyle{module}=[font=\fontsize{12}{6}\color{black}\ttfamily]
+
+\tikzstyle{subroutine}=[rectangle, rounded corners, node distance = 0.6cm,draw=black!50,fill=green!20]
+
+\tikzstyle{function}=[rectangle, rounded corners, node distance = 0.6cm,draw=black!50, fill=blue!20]
+
+\tikzstyle{interface}=[rectangle, rounded corners, node distance = 0.6cm,draw=black!50, fill=brown!50]
+
+\tikzstyle{operator}=[rectangle, rounded corners, node distance = 0.6cm,draw=black!50, fill=purple!20]
+
+\def\codepath{./Files/}
+
+\def\Settings{
+
+	\renewcommand*\thesection{\arabic{section}}
+	\let\oldsection\section
+	\renewcommand\section{\clearpage\oldsection}
+	\titleformat{\subsubsection}[block]{\bfseries\filcenter}{}{}{}
+
+	\author{Akhil Akkapelli}
+	\def\toc{\tableofcontents\pagebreak}
+
+	\graphicspath{ {./Files/} }
+
+}

@@ -1,0 +1,396 @@
+\documentclass{report}
+
+\usepackage{Local_Macros}
+\usepackage{../Global_Macros}
+
+\Settings
+
+\title{ \bfseries LP Solver }
+
+\begin{document}
+
+\maketitle
+
+
+	\begin{landscape}
+
+	\begin{figure}
+		\subsection{Simple Module Dependency Diagram}
+		\scalebox{0.8}{
+			\begin{tikzpicture}[node distance = 5cm, auto, line width=0.5pt]
+
+				\node [textbox,fill=yellow!80,inner sep=2em] (test) {testLPSolver};
+
+				\node [block, below of=test, node distance=5cm] (StdLP) {LPPMethods};
+
+				\node [block, left of=StdLP, node distance=10cm] (pre) {LPPGeneration};
+
+				\node [block,right of=StdLP,node distance=10cm] (post) {Augment};
+
+
+				\node [block,below of=pre] (gen) {ProbabilityGeneration};
+
+				\node [block,below of=gen] (dist) {ProbDistributions};
+
+				\node [block, below of=StdLP, node distance=5cm] (algo) {ProjScalingAlgo};
+
+				\node [block, below of=algo, node distance=5cm] (aug) {LPTools};
+
+				\node [block, below of=post, node distance=5cm] (LA) {LALibrary};
+
+
+				\path [arrow] (test) -- (pre);
+				\path [arrow] (test) -- (StdLP);
+
+				\path [arrow,red] (pre) -- (gen.130);
+				\path [arrow,red] (pre) -- (dist.130);
+
+				\path [arrow,violet] (gen) -- (dist);
+
+				\path [arrow,green] (StdLP) -- (post);
+				\path [arrow,green] (StdLP) -- (algo.130);
+				\path [arrow,green] (StdLP) -- (aug.130);
+				\path [arrow,green] (StdLP) -- (LA);
+				\path [arrow,green] (StdLP) -- (gen);
+
+
+
+				\path [arrow,orange] (algo) -- (post);
+				\path [arrow,orange] (algo) -- (LA);
+
+				\path [arrow,blue] (aug) -- (LA);
+				\path [arrow,blue] (aug) -- (gen);
+				\path [arrow,blue] (aug) -- (post);
+
+		\end{tikzpicture}}\label{simmdd}
+	\end{figure}
+\end{landscape}
+
+\begin{landscape}
+	\begin{figure}
+		\subsection{Detailed Modular Dependency Diagram}
+		\begin{tikzpicture}[node distance = 3cm, auto, line width=0.5pt]
+
+			\node [textbox,fill=yellow!80,inner sep=2em] (test) {testLPSolver};
+
+			\node [cloud, left of=test,node distance=5cm] (input) {Input};
+			\node [cloud, right of=test,node distance=5cm] (output) {Output};
+
+			\node [module, below of=test, node distance=3cm,green] (StdLP) {LPPMethods};
+			\node [subroutine,below of=StdLP,node distance=1cm] (dual) {LPType};
+%			\node [function,below of=dual] (LP) {LPSolver};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(StdLP) (dual) }, inner sep=1em] (StdLPbox) {};
+			\end{scope}
+
+
+			\node [module, left of=StdLP, node distance=7cm,red] (pre) {LPPGeneration};
+			\node [subroutine,below of=pre,node distance=1cm] (genprob) {LPGen};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(pre) (genprob)}, inner sep=1em] (prebox) {};
+			\end{scope}
+
+
+			\node [module,right of=StdLP,node distance=7cm,blue] (post) {Augment};
+			\node [subroutine,below of=post,node distance=1cm] (analyze) {.HAUG.};
+			\node [subroutine,below of=analyze,node distance=1cm] (analyze2) {.VAUG.};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(post) (analyze) (analyze2)}, inner sep=1em] (postbox) {};
+			\end{scope}
+
+
+			\node [module,below of=pre,violet,node distance=3.5cm] (gen) {ProbabilityGeneration};
+			\node [interface,below of=gen,node distance=1cm] (prob) {ProbGen};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(gen) (prob)}, inner sep=1em] (genbox) {};
+			\end{scope}
+
+			\node [module,below of=gen, node distance=3.5cm] (dist) {ProbabilityDistributions};
+			\node [function,below of=dist,node distance=1cm] (u4) {ProbDist};
+
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(dist) (u4)}, inner sep=1em] (distbox) {};
+			\end{scope}
+
+
+			\node [module, below of=StdLPbox, node distance=3cm,orange] (algo) {ProjScalingAlgo};
+			\node [function,below of=algo,node distance=1cm] (kar) {ProjectiveScale};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(algo) (kar)},inner sep=1em] (algobox) {};
+			\end{scope}
+
+			\node [module, below of=algo, node distance=3cm] (aug) {LPTools};
+			\node [operator,below of=aug,node distance=1cm] (haug) {Dual};
+			\node [operator,below of=haug] (vaug1) {ProjectiveTransform};
+			\node [operator,below of=vaug1] (vaug2) {InvProjTransform};
+			\node [operator,below of=vaug2] (vaug3) {stopcond};
+			\node [operator,below of=vaug3] (vaug4) {ratiotest};
+			\node [operator,below of=vaug4] (vaug6) {StdtoCan};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(aug) (haug) (vaug1) (vaug2) (vaug3) (vaug4) (vaug6)},inner sep=1em] (augbox) {};
+			\end{scope}
+
+			\node [module, below of=post, node distance=4cm] (LA) {LALibrary};
+			\node [function,below of=LA,node distance=1cm] (diag) {Diag};
+			\node [function,below of=diag] (ones) {Ones};
+			\node [function,below of=ones] (col) {ColMult};
+			\node [function,below of=col] (dot) {Dot};
+			\node [function,below of=dot] (enorm) {ENorm};
+			\node [function,below of=enorm] (syminv) {Pdsol};
+			\node [function,below of=syminv] (gemv) {GeMV};
+			\node [function,below of=gemv] (gemm) {GeMM};
+			\node [function,below of=gemm] (gemm2) {Trans};
+			\node [function,below of=gemm2] (gemm3) {NSqrt};
+			\node [function,below of=gemm3] (gemm4) {NLog};
+			\node [function,below of=gemm4] (gemm5) {Add};
+			\begin{scope}[on background layer]
+				\node [draw=black!50, fill=orange!20,fit={(LA) (diag) (ones) (col) (dot) (enorm) (syminv) (gemv) (gemm) (gemm2) (gemm3) (gemm4) (gemm5)},inner sep=1em] (LAbox) {};
+			\end{scope}
+
+
+			\path [arrow] (input) -- (test);
+			\path [arrow] (test) -- (output);
+			\path [arrow] (test) -- (prebox.east) -- (genprob.east);
+			\path [arrow] (test) -- (StdLPbox.west) -- (dual.west);
+			\path [arrow] (test) -- (postbox.-200) -- (analyze.west);
+
+			\path [arrow] (augbox) -- (postbox.230) -- (analyze2.west);
+			\path [arrow] (augbox) -- (genbox.340) -- (prob.east);
+			\path [arrow] (augbox) -- (LAbox.240) -- (ones.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (col.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (dot.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (gemv.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (enorm.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (gemm2.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (gemm3.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (gemm4.west);
+			\path [arrow] (augbox) -- (LAbox.240) -- (gemm5.west);
+
+			\path [arrow,red] (prebox) --  (distbox.west) -- (u4.west);
+
+
+			\path [arrow,violet] (genbox) -- (distbox.east) -- (u4.east);
+
+			\path [arrow,green] (StdLPbox) -- (postbox.west) -- (analyze.west);
+			\path [arrow,green] (StdLPbox) -- (postbox.west) -- (analyze2.west);
+			\path [arrow,green] (StdLPbox) -- (algobox.west) -- (kar.west);
+			\path [arrow,green] (StdLPbox) -- (LAbox.150) -- (ones.west);
+			\path [arrow,green] (StdLPbox) -- (LAbox.150) -- (dot.west);
+			\path [arrow,green] (StdLPbox) -- (LAbox.150) -- (col.west);
+			\path [arrow,green] (StdLPbox) -- (LAbox.150) -- (gemv.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (haug.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (vaug1.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (vaug2.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (vaug6.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (vaug3.west);
+			\path [arrow,green] (StdLPbox) -- (augbox.150) -- (vaug4.west);
+
+			\path [arrow,blue] (postbox) -- (LAbox.east) -- (dot.east);
+
+			\path [arrow] (algobox) -- (postbox.210) -- (analyze2.west);
+			\path [arrow,orange] (algobox) --(augbox.east) -- (vaug1.east);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (dot.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (enorm.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (gemv.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (gemm.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (col.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (gemm2.west);
+			\path [arrow,orange] (algobox) -- (LAbox.220) -- (syminv.west);
+
+		\end{tikzpicture}\label{detmdd}
+	\end{figure}
+\end{landscape}
+\pagebreak
+
+\section{Projective Scaling Algorithm}
+\subsubsection{Optimize}
+\begin{center}
+
+\begin{tikzpicture}[ node distance = 5.5cm, auto, line width=0.5pt]
+	% Place nodes
+	\node [cloud] (input) {\vei xk};
+
+	\node [block, below of=input,text width=15em] (optimize) {
+		$ \ve e = 1$\\ \vspace{1em}
+		$  \vei x0 = \ve e/n$\\ \vspace{1em}
+		$ \mathbf{Ad} = \text{Colmult}(\vei xp, \ve A)$\\ \vspace{1em}
+		$\ve B = \left[\mathbf{Ad} \quad \ve e\right]^T $\\ \vspace{1em}
+		$\vei v = (\ve B\ve B^T)^{-1}\ve B (\vei xp *\ve c) $\\ \vspace{1em}
+		$\vei cp = \vei xp*c - \ve B^T\ve v $\\ \vspace{1em}
+		$\veh c = \frac{\vei cp}{|\vei cp|}$\\ \vspace{1em}
+		$\alpha = \text{ratiotest}(n,\veh c)$\\ \vspace{1em}
+		$\ved x=\vei x0 -\alpha \veh c$\\ \vspace{1em}
+		$\vei x{k+1} = \frac{\ve x*\vei xk}{\ve x^T \vei xk}$ };
+
+	\node [cloud,below of=optimize,node distance = 5.5cm] (output) {\vei x{k+1}};
+
+	% Draw edges
+	\path [arrow] (input) -- (optimize);
+	\path [arrow] (optimize) -- (output);
+\end{tikzpicture}
+\end{center}
+
+\inputcode[label={lst:karmarkar}]{ProjScalingAlgo.F95}
+
+\pagebreak
+
+
+\section{Ratio Test}
+\inputcode[label={lst:karmarkar}]{PotentialRatio.F95}
+\inputcode[label={lst:karmarkar}]{MinimumRatio.F95}
+\inputcode[label={lst:karmarkar}]{ZeroRatio.F95}
+
+\section{Stopping Criteria}
+
+\inputcode[label={lst:karmarkar}]{OptimumStop.F95}
+\inputcode[label={lst:karmarkar}]{PotentialStop.F95}
+\inputcode[label={lst:karmarkar}]{ZeroStop.F95}
+
+\section{LPP Methods}
+
+	\subsection{Canonical}
+
+\CanLP
+\vspace{1cm}
+
+\inputcode[label={lst:karmarkar}]{Canonical.F95}
+\pagebreak
+
+\subsection{Equality}
+
+The Initial Problem is
+\begin{align*}
+	\text{Find a feasible point \quad}&  \vei x{feas}\\
+	\text{in Affine Space\quad } \quad \ve A\ve x &= \ve b\\
+	\text{s.t\quad } 	 \ve x &\ge \ve 0
+\end{align*}
+\\
+Introducing an artificial variable to create an interior starting point,
+\begin{align*}
+	\text{Minimize\quad  }&  \lambda\\
+	\text{in Affine Space\quad } \quad\ve A\ve x  + \lambda (\ve b - \ve A\vei x0)&= \ve b\\
+	\text{s.t\quad } 	 \ve x \ge \ve 0&\text{,\quad  for some } \vei x0 \ge \ve 0
+\end{align*}
+\\
+This gives us an  LPP in Equality form,
+\begin{align*}
+	\text{Minimize\quad  }&  \vei c{eq}^T \ve x'\\
+	\text{in Affine Space\quad } \quad\vei A{eq}\ve x  &= \vei b{eq}\\
+	\text{s.t\quad } 	 \ve x' &\ge \ve 0
+\end{align*}
+\quad where $\ve x' =  \begin{bmatrix}\ve x \\ \lambda\end{bmatrix}$, \vei b{eq} = \ve b, $\vei A{eq} =  \begin{bmatrix}\ve A & \ve b - \ve A\vei x{0}\end{bmatrix}$\quad  and\quad  $\vei c{eq} =  \begin{bmatrix}\ve 0\\ 1\end{bmatrix}$
+\\[1em]
+
+Projectively Transforming to Canonical form,
+\begin{align*}
+	\text{Minimize\quad  }&  \vei c{can}^T \ve x''\\
+	\text{in  Subspace\quad } \quad\vei A{can}\ve x''  &= \ve 0\\
+	\text{s.t\quad } 	 \ve x'' &\ge \ve 0
+\end{align*}
+\\
+
+
+
+\vspace{1cm}
+
+\pagebreak
+
+
+\inputcode[label={lst:karmarkar}]{Equality.F95}
+\pagebreak
+
+
+\subsection{LeastNegative}
+
+\subsection*{Input}
+The Input LP Problem is in the Equality form:
+\EqLP
+
+\subsection*{Objective}
+To find the Least Negative lower bound to the system of equations {\Axb} if exists, else find the Feasible point to the LP Problem.
+
+\subsection*{Method}
+
+\subsubsection*{Step 1: Find a  point satisfying the system of equations.}
+
+We use Least Squares Method to find a point \vei x0 satisfying \Axb. The process is as follows:
+
+\begin{align*}
+	A\sT A \vei y0 &= \ve b \\
+	\vei y0 &= \ainv{(A\sT A)}\ve b \\
+	\vei x0 &= \sT A \vei y0
+\end{align*}
+
+
+\subsubsection*{Step 2: Construct LPP to solve for lower bound of system of equations}
+
+Let
+\begin{align*}
+	\varepsilon_0 &= -2*minval(\vei x0) \\
+	\veid x0 &= \vei x0 + \varepsilon_0
+	%	\veid x0 = \begin{bmatrix}
+		%		\vei x0 + \varepsilon_0 \\
+		%		\varepsilon_0
+		%	\end{bmatrix}
+\end{align*}
+
+The point $\begin{bmatrix} \veid x0 \\ \varepsilon_0\end{bmatrix}$\ satisfies the LP Problem:
+
+$$\text{minimize\quad}\varepsilon$$
+
+\begin{align*}
+	\begin{bmatrix}
+		A &  -rowsum(A)
+	\end{bmatrix}
+	\begin{bmatrix}
+		\ved x \\
+		\varepsilon
+	\end{bmatrix}
+	= \ve b
+	\quad s.t\quad
+	\begin{matrix}
+		\ved x \ge 0  \\
+		\varepsilon \ge 0
+	\end{matrix}
+\end{align*}
+where $\ved x = \ve x + \varepsilon$.
+
+\subsubsection*{Step 3: Solve the LPP for zero Optimum}
+If the optimum solution of the LPP is zero, then the Feasible point for the Initial LPP can be found by \vei x0 = \veid x{opt}, else $\varepsilon_{opt}$ is the Least lower bound to the system of equations.
+
+\pagebreak
+\vspace{1cm}
+
+\inputcode[label={lst:karmarkar}]{LeastNegative.F95}
+\pagebreak
+
+\section{Modules}
+\subsection{LPPGeneration}
+\inputcode{LPPGeneration.F90}
+\subsection{ProbabilityGeneration}
+\inputcode{ProbabilityGeneration.F90}
+
+\subsection{ProbabilityDistributions}
+\inputcode{ProbabilityDistributions.F90}
+
+
+\subsection{LPPMethods}
+\inputcode{LPPMethods.F90}
+
+
+\subsection{ProjScalingAlgo}
+\inputcode{ProjScalingAlgo.F90}
+
+
+\subsection{LALibrary}
+\inputcode{LALibrary.F90}
+
+
+\subsection{LPTools}
+\inputcode{LPTools.F90}
+
+\subsection{AUGOperator}
+\inputcode{AUGOperator.F90}
+
+
+\end{document}

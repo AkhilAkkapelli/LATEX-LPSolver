@@ -1,0 +1,18 @@
+\BOOKMARK [2][-]{subsection.0.0.1}{Simple Module Dependency Diagram}{}% 1
+\BOOKMARK [2][-]{subsection.0.0.2}{Detailed Modular Dependency Diagram}{}% 2
+\BOOKMARK [1][-]{section.0.1}{Projective Scaling Algorithm}{}% 3
+\BOOKMARK [1][-]{section.0.2}{Ratio Test}{}% 4
+\BOOKMARK [1][-]{section.0.3}{Stopping Criteria}{}% 5
+\BOOKMARK [1][-]{section.0.4}{LPP Methods}{}% 6
+\BOOKMARK [2][-]{subsection.0.4.1}{Canonical}{section.0.4}% 7
+\BOOKMARK [2][-]{subsection.0.4.2}{Equality}{section.0.4}% 8
+\BOOKMARK [2][-]{subsection.0.4.3}{LeastNegative}{section.0.4}% 9
+\BOOKMARK [1][-]{section.0.5}{Modules}{}% 10
+\BOOKMARK [2][-]{subsection.0.5.1}{LPPGeneration}{section.0.5}% 11
+\BOOKMARK [2][-]{subsection.0.5.2}{ProbabilityGeneration}{section.0.5}% 12
+\BOOKMARK [2][-]{subsection.0.5.3}{ProbabilityDistributions}{section.0.5}% 13
+\BOOKMARK [2][-]{subsection.0.5.4}{LPPMethods}{section.0.5}% 14
+\BOOKMARK [2][-]{subsection.0.5.5}{ProjScalingAlgo}{section.0.5}% 15
+\BOOKMARK [2][-]{subsection.0.5.6}{LALibrary}{section.0.5}% 16
+\BOOKMARK [2][-]{subsection.0.5.7}{LPTools}{section.0.5}% 17
+\BOOKMARK [2][-]{subsection.0.5.8}{AUGOperator}{section.0.5}% 18

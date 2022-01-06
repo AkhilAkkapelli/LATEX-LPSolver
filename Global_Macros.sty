@@ -1,0 +1,321 @@
+                          %GLOBAL MACROS%
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lmodern}
+
+
+\def\minus#1{\ensuremath{- #1}}
+
+\def\Order#1{\ensuremath{O \left( #1 \right)}}
+
+\def\ve#1{\ensuremath{\mathbf #1}}
+
+\def\vei#1#2{\ensuremath{\mathbf #1_{#2}}}
+
+\def\vep#1#2{\ensuremath{\mathbf #1^{#2}}}
+
+\def\vi#1#2{\ensuremath{#1_{#2}}}
+
+\def\vp#1#2{\ensuremath{#1^{#2}}}
+
+\def\vpi#1#2#3{\ensuremath{#1^{#2}_{#3}}}
+
+\def\vepi#1#2#3{\ensuremath{\mathbf #1^{#2}_{#3}}}
+
+\def\vd#1{\ensuremath{#1'}}
+
+\def\vdi#1#2{\ensuremath{#1_{#2}'}}
+
+\def\ved#1{\ensuremath{\ve #1'}}
+
+\def\veid#1#2{\ensuremath{\mathbf #1_{#2}'}}
+
+\def\veh#1{\ensuremath{\hat{\ve #1}}}
+
+\def\vehi#1#2{\ensuremath{\hat{\ve #1}_{\scriptscriptstyle #2}}}
+
+\def\veSpace#1{\ensuremath{\mathfrak{#1}}}
+
+\def\R{\ensuremath{\mathbb R}}
+
+\def\C{\ensuremath{\mathbb C}}
+
+\def\Q{\ensuremath{\mathbb Q}}
+
+\newcommand{\Zn}[1][n]{\ensuremath{\mathbb{Z}^{#1}}}%\usepackage{amsfonts}
+
+\newcommand{\Rn}[1][n]{\ensuremath{\mathbb{R}^{#1}}}%\usepackage{amsfonts}
+
+\def\F{\ensuremath{\mathbb F}}
+
+\newcommand{\overRn}{\forall \ve{x}         &\in \Rn[n]}
+
+\def\barSp{\ensuremath{\ |\ }}
+
+\def\impliesSp{\ensuremath{\quad \implies\quad }}
+
+\def\cTx{\ensuremath{\ve c^{\scriptscriptstyle T}\ve x} }
+
+\def\bTu{\ensuremath{\ve b^{\scriptscriptstyle T}\ve u} }
+
+\def\sT#1{\ensuremath{ #1^{\scriptscriptstyle T} } } %a Transpose
+
+\def\sTi#1#2{\ensuremath{ #1^{\scriptscriptstyle T}_{#2} } } %a Transpose
+
+\def\aT#1{\ensuremath{ \ve#1^{\scriptscriptstyle T} } } %a Transpose
+
+\def\ainv#1{\ensuremath{ \ve#1^{\scriptscriptstyle {-1}} } } %a Inverse
+
+\def\aTved#1{\ensuremath{ {\ve{#1'}}^{\scriptscriptstyle T} } }
+
+\def\aTb#1#2{\ensuremath{ \ve#1^{\scriptscriptstyle T} \ve#2 } } %a Transpose b
+
+\def\aTvedb#1#2{\ensuremath{ {\ve{#1'}}^{\scriptscriptstyle T} \ve#2 } }
+
+\def\vebs#1#2{\ensuremath{\ve #1^{\left(#2\right)}}}
+
+\def\vebssetz#1#2{\ensuremath{\vebs#1 0, \vebs#1 1,\dotsc,\vebs#1 #2}}
+
+\def\th#1{\ensuremath{#1^{th}}}
+
+\def\vset#1#2{\ensuremath{#1_1,#1_2,\dotsc,#1_#2}}
+
+\def\nset#1{\ensuremath{1,2,\dotsc,#1}}
+
+\def\diag#1{\ensuremath{\text{diag }\{ #1 \}}}
+
+\def\projtransf{\ensuremath{T\left(\ve a,\vei a0\right)} }
+
+\def\ball#1#2#3{\ensuremath{#1\left(\vei #2, #3\right)}}
+
+\def\setthat#1#2{\ensuremath{\{ #1 \barSp #2\}}}
+
+\def\vsetthat#1#2{\ensuremath{\{ \ve{#1} \barSp #2\}}}
+
+\def\minimize #1 subject to #2, #3, #4{\[\text{minimize\quad} #1\] \[\text{subject to\quad}\begin{cases}#2\\#3\\#4\end{cases}\]}
+
+\def\Axz{\ensuremath{A\ve x = \ve 0}}
+
+\def\Axb{\ensuremath{A\ve x = \ve b}}
+
+\def\ATu{\ensuremath{A^{\scriptscriptstyle T}\ve u}}
+
+\def\sumxo{\ensuremath{\sum \vei xi = 1}}
+
+\def\xgez{\ensuremath{\ve x \ge \ve 0}}
+
+\def\polytope{\ensuremath{\Pi = \Omega \cap \Delta}}
+
+\def\fof#1#2{\ensuremath{#1\left(#2\right)}}
+
+\def\Fof#1{\ensuremath{f\left(#1\right)}}
+
+\def\Fdof#1{\ensuremath{f'\left(#1\right)}}
+
+\def\fofv#1#2{\ensuremath{#1\left(\ve{#2}\right)}}
+
+\def\Fofv#1{\ensuremath{f\left(\ve{#1}\right)}}
+
+\def\fofazmfi#1{\ensuremath{\fof f{\vei a0} - f_#1}}
+
+\def\SumTuple#1#2{ \ensuremath{ ( \vi{#1}{1} + \vi{#2}{1}, \quad \vi{#1}{2} + \vi{#2}{2}, \quad \cdots, \quad \vi{#1}{n} + \vi{#2}{n} ) } } %Sum-Tuple
+
+\def\ntuple#1{ \ensuremath{ ( \vi{#1}{1}, \vi{#1}{2}, \cdots, \vi{#1}{n} ) } } %n-Tuple
+
+\newcommand{\Trans}[2]{ \ensuremath{  #1 \ : \ #2 \ \mapsto \ #2 } } %Definition of Transformation
+
+\newcommand{\TransAlign}[2]{ \ensuremath{  #1 &  \ :  \ #2 \ \mapsto \ #2 } } %Definition of Transformation
+
+\newcommand{\AffineTRn}[4]{ \ensuremath{ #1(#2) = {#3}{#2} + {#4}     }}
+
+\newcommand{\AffineTRnAlign}[4]{ \ensuremath{ #1(#2)  & =  {#3}{#2} + {#4}     }}
+
+\newcommand{\IAffineTRn}[4]{ \ensuremath{ #1^{-1}(#2) = {#3}^{-1}(    {#2} - {#4}   )  }}
+
+\newcommand{\IAffineTRnAlign}[4]{ \ensuremath{ #1^{-1}(#2)  &=  {#3}^{-1}(    {#2} - {#4}   )  }}
+
+\newcommand{\Map}[3]{ \ensuremath{  #1 \ : \ #2 \ \mapsto \ #3 } } %Definition of Maps/Functions
+
+\newcommand{\MapAlign}[3]{ \ensuremath{  #1 \quad : \quad #2 \quad &\mapsto \quad #3 } } %Definition of Maps/Functions with alignment
+
+\newcommand{\MapAlignCompact}[3]{ \ensuremath{  #1 \ : \ #2 \  &\mapsto \  #3 } } %Definition of Maps/Functions with alignment
+
+\newcommand{\HalfSpace}[4]{ \ensuremath{ \{ \ve{#1} \barSp \ve{#1} \in \Rn[#2], \ \aTb{#3}{#1} \leq {#4}  \ \}  }} %HalfSpace
+
+\newcommand{\HalfSpaceAlign}[4]{ \ensuremath{ \{ \ve{#1} \barSp \ve{#1} \in \Rn[#2], \ \aTb{#3}{#1}\ \leq {#4}  \ \}  }} %HalfSpaceAlign
+
+\def\Axb{$A\ve x = \ve b$}
+
+%%% FORMS OF LP %%%
+
+\def\StdLP{
+$$ \text{minimize\quad}\cTx$$
+$$\text{subject to} \begin{cases}
+	 \Axb
+	\\  \ve x \ge 0
+\end{cases}$$
+}
+
+\def\CanLP{
+	$$ \text{minimize\quad}\cTx$$
+	$$\text{subject to} \begin{cases}
+		 \ve A \ve x = \ve 0
+		\\  \ve x \ge \ve 0\quad \& \quad \sum_i \vi xi = 1
+ 	\end{cases}$$
+}
+
+\def\EqLP{
+	$$ \text{minimize\quad}\cTx$$
+	$$\text{subject to} \begin{cases}
+		 A \ve x = \ve b
+		\\  \ve x \ge \ve 0
+	\end{cases}$$
+}
+
+\def\GIneqLP{
+	$$ \text{minimize\quad}\cTx$$
+$$\text{subject to} \begin{cases}
+	A \ve x \ge \ve b
+	\\  \ve x \ge \ve 0
+\end{cases}$$
+}
+
+\def\LIneqLP{
+	$$ \text{minimize\quad}\cTx$$
+	$$\text{subject to} \begin{cases}
+		A \ve x \le \ve b
+		\\  \ve x \ge \ve 0
+	\end{cases}$$
+}
+
+\def\StandardLP{
+$$ \text{minimize\quad}\cTx$$
+$$\text{subject to} \begin{cases}
+	 A \ve x \ge b
+	\\  \ve x \ge 0
+\end{cases}$$
+}
+
+\def\SimpleLP{
+	\begin{align*}
+	&\cTx \\
+	A\ve x&\le\ b
+	\end{align*}
+}
+
+\def\DualStandardLP{
+	$$ \text{minimize\quad}-\bTu$$
+	$$\text{subject to} \begin{cases}
+		-\sT A \ve u \ge -c
+		\\  \ve u \ge 0
+	\end{cases}$$
+}
+
+%%% FORMS OF LP %%%
+
+\def\checkmacro#1{\expandafter\ifx\csname #1\endcsname\relax\errmessage{def ERROR: Define #1}\fi}
+
+\def\ifundefined#1{\expandafter\ifx\csname#1\endcsname\relax}
+
+\def\Details
+
+\def\Settings{}%Defined in Local Macros
+
+\def\wdir{}%Path of Frames
+
+\def\addsection#1{\checkmacro{wdir}\def\wdir{#1}\input{\wdir/Top}}
+
+\def\addframe#1{\checkmacro{wdir}\input{\wdir/#1}}
+
+%%%   SWITCH MODE   %%%
+%\expandafter\ifx\csname macro\endcsname\relax(do this)\else (do that)\fi
+\expandafter\ifx\csname switch\endcsname\relax\else
+
+\def\addsection#1{\checkmacro{wdir}
+	\ifnum\switch=0
+	\def\wdir{#1}
+	\input{\wdir/Top}
+	\else\ifnum\switch=1
+	\def\wdir{#1}
+	\input{\wdir/Top}
+	\fi\fi
+
+		}
+
+\def\addframe#1{ \checkmacro{wdir}
+			\ifnum\switch=0
+			\input{\wdir/#1}
+			\else\ifnum\switch=1
+			\begin{frame}[allowframebreaks]
+			\input{\wdir/#1}
+			\end{frame}
+			\fi\fi
+		}
+
+\def\titlename#1{
+				\ifnum\switch=0
+				\section{#1}
+				\else\ifnum\switch=1
+				\frametitle{#1}
+				\fi\fi
+				}
+
+\def\addhead#1{
+				\ifnum\switch=0
+				\chapter{#1}
+				\else\ifnum\switch=1
+				\section{#1}
+				\fi\fi
+			}
+
+\def\toc{\ifnum\switch=0 \tableofcontents\pagebreak\fi}
+
+\def\thankyou{\ifnum\switch=1 \section{Thank you!}\fi}
+
+\fi
+%%%   SWITCH MODE   %%%
+
+%%%   CODE MODE     %%%
+\ifundefined{codepath}\else
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+	basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+	breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+	breaklines=true,                 % sets automatic line breaking
+	captionpos=b,                    % sets the caption-position to bottom
+	commentstyle=\color{mygreen},    % comment style
+	extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+	keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+	keywordstyle=\color{blue},       % keyword style
+	language={Fortran},                 % the language of the code
+	numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+	numbersep=5pt,                   % how far the line-numbers are from the code
+	numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+	rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+	showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+	showstringspaces=false,          % underline spaces within strings only
+	showtabs=false,                  % show tabs within strings adding particular underscores
+	stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+	stringstyle=\color{mymauve},     % string literal style
+	tabsize=4,                       % sets default tabsize to 2 spaces
+	title=\namecode, 	               % show the filename of files
+	framexleftmargin=5mm,
+	frame=single,
+	frameround=fttt,
+%	line width = 20cm,
+	xleftmargin=5mm,
+}
+
+\newcommand{\inputcode}[2][]{\def\namecode{\makeatletter\filename@parse{#2}\filename@base\makeatother}\lstinputlisting[#1]{\codepath/#2}}
+
+\fi
+
+%%%   CODE MODE     %%%

@@ -1,0 +1,19 @@
+\contentsline {subsection}{\numberline {0.1}Simple Module Dependency Diagram}{2}{subsection.0.0.1}
+\contentsline {subsection}{\numberline {0.2}Detailed Modular Dependency Diagram}{3}{subsection.0.0.2}
+\contentsline {section}{\numberline {1}Projective Scaling Algorithm}{4}{section.0.1}
+\contentsline {subsubsection}{Optimize}{4}{subsubsection*.2}
+\contentsline {section}{\numberline {2}Ratio Test}{6}{section.0.2}
+\contentsline {section}{\numberline {3}Stopping Criteria}{7}{section.0.3}
+\contentsline {section}{\numberline {4}LPP Methods}{8}{section.0.4}
+\contentsline {subsection}{\numberline {4.1}Canonical}{8}{subsection.0.4.1}
+\contentsline {subsection}{\numberline {4.2}Equality}{9}{subsection.0.4.2}
+\contentsline {subsection}{\numberline {4.3}LeastNegative}{11}{subsection.0.4.3}
+\contentsline {section}{\numberline {5}Modules}{13}{section.0.5}
+\contentsline {subsection}{\numberline {5.1}LPPGeneration}{13}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {5.2}ProbabilityGeneration}{14}{subsection.0.5.2}
+\contentsline {subsection}{\numberline {5.3}ProbabilityDistributions}{15}{subsection.0.5.3}
+\contentsline {subsection}{\numberline {5.4}LPPMethods}{16}{subsection.0.5.4}
+\contentsline {subsection}{\numberline {5.5}ProjScalingAlgo}{19}{subsection.0.5.5}
+\contentsline {subsection}{\numberline {5.6}LALibrary}{21}{subsection.0.5.6}
+\contentsline {subsection}{\numberline {5.7}LPTools}{25}{subsection.0.5.7}
+\contentsline {subsection}{\numberline {5.8}AUGOperator}{28}{subsection.0.5.8}

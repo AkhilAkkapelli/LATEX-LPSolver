@@ -1,0 +1,157 @@
+#include "Preprocessor.F90"
+
+MODULE LAPACKLibrary
+IMPLICIT NONE
+
+
+PRIVATE
+PUBLIC :: DOT, ENORM, DPOINV, EIGEN, LAGEMV, LAGEMM
+
+CONTAINS
+
+
+FUNCTION DOT(SX,SY) RESULT(uTv)
+
+REAL(8), INTENT(IN) :: SX(:), SY(:)
+
+REAL(8) :: uTv
+
+INTEGER(8) :: N, INCX, INCY
+REAL(8), EXTERNAL :: DDOT
+
+
+INCX = 1D0; INCY = 1D0
+
+IF( size(SX) /= size(SY) ) STOP "DOT ERROR: Input Argument dimensions do not matchs"
+N = SIZE(SX)
+
+uTv = DDOT(N, SX, INCX, SY, INCY)
+
+END FUNCTION DOT
+
+
+FUNCTION ENORM(X) RESULT(NormV)
+
+REAL(8), INTENT(IN) :: X(:)
+
+REAL(8) :: NormV
+
+INTEGER(8) :: N, INCX
+REAL(8), EXTERNAL :: DNRM2
+
+
+INCX = 1D0
+N = SIZE(X)
+
+NormV = DNRM2(N, X, INCX)
+
+END FUNCTION ENORM
+
+
+FUNCTION DPOINV(A) RESULT(AINV)
+
+REAL(8), INTENT(IN) :: A(:,:)
+    
+REAL(8) :: AINV(size(A,1),size(A,1))
+
+CHARACTER :: UPLO = 'L'
+INTEGER :: N, LDA, IPIV(size(A,1)), INFO, i, j
+
+
+N = size(A,1)
+LDA = N	
+AINV = A
+
+IF( SIZE(A,1) /= SIZE(A,2) ) STOP "INVALID SIZE" 
+
+CALL DPOTRF( UPLO, N, AINV, LDA, INFO )
+
+IF(INFO /= 0) STOP "DPOINV : MATRIX INVERSION ERROR"
+
+CALL DPOTRI( UPLO, N, AINV, LDA, INFO )
+
+IF(INFO /= 0) STOP "DPOINV : MATRIX INVERSION ERROR"
+
+FORALL( i = 1:size(A,1) , j = 1:size(A,2) , j < i  )
+	AINV(j,i) = AINV(i,j)
+END FORALL
+
+END FUNCTION DPOINV
+
+
+FUNCTION EIGEN(A) RESULT(E)
+
+REAL(8) :: A(:,:)
+
+REAL(8) :: E(size(A,1))
+
+CHARACTER :: JOBZ = 'N', UPLO = 'L'
+INTEGER :: N, LDA, LWORK, INFO
+REAL(8), ALLOCATABLE :: WORK(:)
+
+N = size(A,1)
+LDA = N
+
+LWORK = -1
+ALLOCATE(WORK(1))
+
+CALL DSYEV(JOBZ, UPLO, N, A, LDA, E, WORK, LWORK, INFO)
+
+LWORK = WORK(1)
+
+DEALLOCATE(WORK)
+ALLOCATE(WORK(LWORK))
+
+CALL DSYEV(JOBZ, UPLO, N, A, LDA, E, WORK, LWORK, INFO)
+
+DEALLOCATE(WORK)
+
+END FUNCTION EIGEN
+
+
+FUNCTION LAGEMV(A,X) RESULT(AX)
+
+REAL(8), INTENT(IN) :: A(:,:), X(:)
+
+REAL(8) :: AX(size(A,1))
+
+CHARACTER :: TRANS = 'N'
+INTEGER(8) :: M, N, LDA, INCX = 1D0, INCY = 1D0
+REAL(8) :: ALPHA = 1.D0, BETA = 0.D0
+
+
+IF( SIZE(A,2) /= SIZE(X) ) STOP "GEMV ERROR: Input Argument dimensions do not match" 
+
+M = size(A,1)
+N = size(A,2)
+LDA = M
+
+CALL DGEMV(TRANS, M, N, ALPHA, A, LDA, X, INCX, BETA, AX, INCY)
+
+END FUNCTION LAGEMV
+
+FUNCTION LAGEMM(A,B) RESULT(C)
+
+REAL(8), INTENT(IN) :: A(:,:), B(:,:)
+
+REAL(8) :: C(size(A,1),size(B,2))
+
+CHARACTER :: TRANSA = 'N', TRANSB = 'N'
+INTEGER(8) :: M, N, K, LDA, LDB, LDC
+REAL(8) :: ALPHA = 1.D0, BETA = 0.D0
+
+
+IF( SIZE(A,2) /= SIZE(B,1) ) STOP "GEMM ERROR: Input Argument dimensions do not match" 
+
+M = size(A,1)
+N = size(B,2)
+K = size(A,2)
+LDA = M
+LDB = K
+LDC = M
+
+CALL DGEMM(TRANSA, TRANSB, M, N, K, ALPHA, A, LDA, B, LDB, BETA, C, LDC)
+
+END FUNCTION LAGEMM
+
+END MODULE LAPACKLibrary
